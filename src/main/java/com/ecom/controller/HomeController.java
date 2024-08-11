@@ -20,5 +20,10 @@ public class HomeController {
 	public String register() {
 		return "register.html";
 	}
+	
+	@GetMapping("/products")
+	public String products() {
+		return "product.html";
+	}
 
 }
