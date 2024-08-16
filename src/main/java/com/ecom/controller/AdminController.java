@@ -2,17 +2,19 @@ package com.ecom.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ecom.model.Category;
 import com.ecom.service.CategoryService;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
 	
@@ -44,9 +46,18 @@ public class AdminController {
 	public String saveCategory(@ModelAttribute Category category, HttpSession session) {
 		Boolean existCategory= categoryService.existCategory(category.getName());
 		
-		
-		
-		categoryService.saveCategory(category);
+		if(existCategory) {
+			
+			session.setAttribute("ERROR MSG", "Category name already exist");
+		} else {
+			Category saveCategory = categoryService.saveCategory(category);
+			if (ObjectUtils.isEmpty(saveCategory)) {
+				session.setAttribute("errorMsg", "Not saved ! internal server error");
+			}else {
+				session.setAttribute("succMsg", "saved successfully");
+			}
+				
+		}		
 		return "redirect:/category";
 	}
 	
