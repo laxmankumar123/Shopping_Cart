@@ -14,16 +14,19 @@ import com.ecom.service.CategoryService;
 
 import jakarta.servlet.http.HttpSession;
 
-@RestController
+
+@Controller
 @RequestMapping("/admin")
 public class AdminController {
 	
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	
 	@GetMapping("/")
 	public String index() {
-		return "admin/index";
+		return "admin/index.html";
 	}
 	
 	
