@@ -13,9 +13,9 @@
 				<div class="col-md-6 offset-md-3">
 					<div class="card card-sh">
 						<div class="card-header text-center ">
-						
-						<p class="fs-4"> Add Product </p>
-						<th:block th:if="${session.succMsg}">
+
+							<p class="fs-4">Edit Product</p>
+							<th:block th:if="${session.succMsg}">
 								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
 								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
 							</th:block>
@@ -24,47 +24,57 @@
 								<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
 								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
 							</th:block>
-						
+
 						</div>
 						<div class="card-body">
-							<form action="/admin/saveProduct" method="post" enctype="multipart/form-data">
+							<form action="/admin/updateProduct" method="post"
+								enctype="multipart/form-data">
+								<input type="hidden" name="id" th:value="${product.id}">
 								<div class="mb-3">
 									<label>Enter Title</label><input type="text" name="title"
-										class="form-control">
+										th:value="${product.title}" class="form-control">
 								</div>
 
 								<div class="mb-3">
 									<label>Enter Description</label>
 
-									<textarea rows="3" cols="" class="form-control" name="description">
-								
+									<textarea rows="3" cols="" class="form-control"
+										name="description">
+								[[${product.description}]]
 								</textarea>
 								</div>
 
 
 								<div class="mb-3">
-									<label>Category</label> <select class="form-control"  name="category">
-										<option>------select------</option>
+									<label>Category</label> <select class="form-control"
+										name="category">
+										<option>[[${product.category}]]</option>
 										<option th:each="c:${categories}">[[${c.name}]]</option>
 									</select>
 								</div>
 
 								<div class="mb-3">
 									<label>Enter Prices</label><input type="number" name="price"
-										class="form-control">
+										th:value="${product.price}" class="form-control">
 								</div>
 
 
 								<div class="row">
 									<div class="mb-3 col">
 										<label>Enter stock</label><input type="number" name="stock"
-											class="form-control">
+											th:value="${product.stock}" class="form-control">
 									</div>
 
 									<div class="mb-3 col">
 										<label>Upload image</label><input type="file" name="file"
 											class="form-control">
 									</div>
+									<div class="mt-1">
+										<img th:src="@{'/img/product_img/'+${product.image}}"
+											width="100px" height="100px">
+
+									</div>
+
 
 								</div>
 
