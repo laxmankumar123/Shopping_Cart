@@ -82,8 +82,8 @@ public class ProductServiceImpl implements ProductService {
 		Double discountPrice= product.getPrice()-discount;	
 		
 		dbProduct.setPrice(discountPrice);
-		//------------//--------------//
-		//------------//--------------//
+		//----------04-09-24------------//
+		//----------04-09-24------------//
 		Product updateProduct = productRepository.save(dbProduct);
 		if(ObjectUtils.isEmpty(updateProduct)) {
 			if(!image.isEmpty()) {
