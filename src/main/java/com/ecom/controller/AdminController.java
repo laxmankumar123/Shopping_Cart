@@ -116,7 +116,7 @@ public class AdminController {
 
 		Category oldCategory = categoryService.getCategoryById(category.getId());
 		String imageNmae = file.isEmpty() ? oldCategory.getImageName() : file.getOriginalFilename();
-
+		
 		if (!ObjectUtils.isEmpty(category)) {
 
 			oldCategory.setName(category.getName());
@@ -202,14 +202,18 @@ public class AdminController {
 	@PostMapping("/updateProduct")
 	public String updateProduct(@ModelAttribute Product product, org.springframework.ui.Model m,
 			@RequestParam("file") MultipartFile image, HttpSession session) {
-
-		Product updateProduct = productService.updateProduct(product, image);
-		if(!ObjectUtils.isEmpty(updateProduct)) {
-			session.setAttribute("succMsg", "product update succussfully ");
+		if(product.getDiscount()<0 || product.getDiscount()>100 ) {
+			session.setAttribute("errorMsg", "invalid discount............!!!");
+			
 		}else {
-			session.setAttribute("errorMsg", "something went wrong......!!!!!!!");
-		}
-		
+			
+			Product updateProduct = productService.updateProduct(product, image);
+			if(!ObjectUtils.isEmpty(updateProduct)) {
+				session.setAttribute("succMsg", "product update succussfully ");
+			}else {
+				session.setAttribute("errorMsg", "something went wrong......!!!!!!!");
+			}
+	}
 		return "redirect:/admin/editProduct/"+product.getId();
 	}
 
