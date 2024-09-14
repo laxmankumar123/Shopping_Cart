@@ -28,7 +28,9 @@ public class Category {
 	
 	
 	private String name;
+	
 	private String imageName;
+	
 	private Boolean isActive;
 	
 	

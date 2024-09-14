@@ -3,6 +3,8 @@ package com.ecom.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import ch.qos.logback.core.model.Model;
+
 @Controller
 public class HomeController {
 	
@@ -22,7 +24,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("/products")
-	public String products() {
+	public String products(Model m) {
 		return "product.html";
 	}
 	

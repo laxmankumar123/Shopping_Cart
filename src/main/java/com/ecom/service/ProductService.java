@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ecom.model.Category;
 import com.ecom.model.Product;
 
 public interface ProductService {
@@ -19,6 +20,8 @@ public interface ProductService {
 	
 	public Product updateProduct(Product product, MultipartFile file);
 	
+	
+
 	
 	
 	

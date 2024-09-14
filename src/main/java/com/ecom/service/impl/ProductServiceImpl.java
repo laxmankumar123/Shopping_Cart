@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ecom.model.Category;
 import com.ecom.model.Product;
 import com.ecom.repository.ProductRepository;
 import com.ecom.service.ProductService;
@@ -73,6 +74,7 @@ public class ProductServiceImpl implements ProductService {
 		dbProduct.setStock(product.getStock());
 		dbProduct.setImage(imageNmae);
 		
+		
 		dbProduct.setDiscount(product.getDiscount());
 		
 		//5=100*(5/100);100-5=95
@@ -91,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
 		System.out.println("----discountPrice"+discountPrice);
 
 		Product updateProduct = productRepository.save(dbProduct);
-		if(ObjectUtils.isEmpty(updateProduct)) {
+		if(!ObjectUtils.isEmpty(updateProduct)) {
 			if(!image.isEmpty()) {
 				
 				try {
@@ -112,6 +114,9 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return null;
 	}
+
+
+
 
 	
 	

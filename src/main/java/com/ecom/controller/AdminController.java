@@ -163,7 +163,7 @@ public class AdminController {
 			System.out.println("=====path" + path);
 			Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-			session.setAttribute("succMsg", "message saved successfully");
+			session.setAttribute("succMsg", "Product saved successfully");
 
 		} else {
 			session.setAttribute("errorMsg", "message not saved---it's error");
@@ -200,18 +200,22 @@ public class AdminController {
 	}
 
 	@PostMapping("/updateProduct")
-	public String updateProduct(@ModelAttribute Product product, org.springframework.ui.Model m,
-			@RequestParam("file") MultipartFile image, HttpSession session) {
+	public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image,
+			HttpSession session, Model m) {
+		
+		
 		if(product.getDiscount()<0 || product.getDiscount()>100 ) {
 			session.setAttribute("errorMsg", "invalid discount............!!!");
 			
 		}else {
 			
 			Product updateProduct = productService.updateProduct(product, image);
+			System.out.println("========productService"+productService.getAllProducts());
+			System.out.println("========updateProduct"+updateProduct);
 			if(!ObjectUtils.isEmpty(updateProduct)) {
 				session.setAttribute("succMsg", "product update succussfully ");
 			}else {
-				session.setAttribute("errorMsg", "something went wrong......!!!!!!!");
+				session.setAttribute("errorMsg", "somethingggg went wrong......!!!!!!!");
 			}
 	}
 		return "redirect:/admin/editProduct/"+product.getId();

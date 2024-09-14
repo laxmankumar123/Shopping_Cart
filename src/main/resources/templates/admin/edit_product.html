@@ -15,17 +15,19 @@
 						<div class="card-header text-center ">
 
 							<p class="fs-4">Edit Product</p>
+							
 							<th:block th:if="${session.succMsg}">
 								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
 								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
 							</th:block>
-
+							
 							<th:block th:if="${session.errorMsg}">
 								<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
 								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
 							</th:block>
-
 						</div>
+						
+						
 						<div class="card-body">
 							<form action="/admin/updateProduct" method="post"
 								enctype="multipart/form-data">
@@ -34,18 +36,18 @@
 									<label>Enter Title</label><input type="text" name="title"
 										th:value="${product.title}" class="form-control">
 								</div>
+								
 
 								<div class="mb-3">
 									<label>Enter Description</label>
-
 									<textarea rows="3" cols="" class="form-control"
 										name="description">
 								[[${product.description}]]
 								</textarea>
 								</div>
 
+
 								<div class="row">
-								
 									<div class="mb-3 col">
 										<label>Category</label> <select class="form-control"
 											name="category">
@@ -53,31 +55,42 @@
 											<option th:each="c:${categories}">[[${c.name}]]</option>
 										</select>
 									</div>
-									
 									<div class="mb-3 col">
 									<label>Enter Prices</label><input type="number" name="price"
 										th:value="${product.price}" class="form-control">
 								</div>
-								
-
 								</div>
 								
 								
 								
 								
-								<div class="row">
-								
+								<div class="row">		
 									<div class="mb-3 col">
 										<label>Discount</label> <input type="number" name="discount"
 										th:value="${product.discount}" class="form-control">
 									</div>
-									
 									<div class="mb-3 col">
 									<label>Discount Prices</label><input type="number"  readonly
 										th:value="${product.discountPrice}" class="form-control">
 								</div>
+								</div>
 								
 
+								
+								<div class="mb-3">
+									<label>Status</label>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" checked
+											name="isActive" value="true" id="flexRadioDefault1">
+										<label class="form-check-label" for="flexRadioDefault1">
+											Active</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="isActive"
+											value="false" id="flexRadioDefault2"> <label
+											class="form-check-label" for="flexRadioDefault2">
+											InActive</label>
+									</div>
 								</div>
 								
 								
@@ -92,7 +105,6 @@
 										<label>Enter stock</label><input type="number" name="stock"
 											th:value="${product.stock}" class="form-control">
 									</div>
-
 									<div class="mb-3 col">
 										<label>Upload image</label><input type="file" name="file"
 											class="form-control">
@@ -100,12 +112,10 @@
 									<div class="mt-1">
 										<img th:src="@{'/img/product_img/'+${product.image}}"
 											width="100px" height="100px">
-
 									</div>
-
-
 								</div>
-
+								
+								
 								<button class="btn btn-primary col-md-12">Submit</button>
 
 							</form>
