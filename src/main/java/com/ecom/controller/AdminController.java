@@ -211,7 +211,9 @@ public class AdminController {
 			
 			Product updateProduct = productService.updateProduct(product, image);
 			System.out.println("========productService"+productService.getAllProducts());
+			
 			System.out.println("========updateProduct"+updateProduct);
+			
 			if(!ObjectUtils.isEmpty(updateProduct)) {
 				session.setAttribute("succMsg", "product update succussfully ");
 			}else {
