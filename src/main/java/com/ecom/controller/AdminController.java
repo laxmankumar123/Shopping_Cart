@@ -174,13 +174,13 @@ public class AdminController {
 		return "redirect:/admin/loadAddProduct";
 	}
 
-	/*@GetMapping("/products")
+	@GetMapping("/products")
 	public String loadViewProducts(org.springframework.ui.Model m) {
 
 		m.addAttribute("products", productService.getAllProducts());
 		return "admin/products";
-	}*/
-	
+	}
+	/*
 	@GetMapping("/products")
 	public String products(org.springframework.ui.Model m, @RequestParam(value = "category", defaultValue = "") String category,
 			@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
@@ -211,7 +211,7 @@ public class AdminController {
 		m.addAttribute("isLast", page.isLast());
 
 		return "product";
-	}
+	}*/
 
 	@GetMapping("/deleteProduct/{id}")
 	public String deleteProduct(@PathVariable int id, HttpSession session) {

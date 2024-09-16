@@ -23,11 +23,12 @@ public interface ProductService {
 	
 	public List<Product> getAllActiveProducts(String category);
 
+	/*
 	public Page<Product> getAllActiveProductPagination(Integer pageNo, Integer pageSize, String category);
 
 	public Page<Product> searchActiveProductPagination(Integer pageNo, Integer pageSize, String category, String ch);
 	
-	
+	*/
 
 	
 	
