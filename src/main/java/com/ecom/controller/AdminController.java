@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import com.ecom.service.CategoryService;
 import com.ecom.service.ProductService;
 
 import ch.qos.logback.core.model.Model;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
 
@@ -172,11 +174,43 @@ public class AdminController {
 		return "redirect:/admin/loadAddProduct";
 	}
 
-	@GetMapping("/products")
+	/*@GetMapping("/products")
 	public String loadViewProducts(org.springframework.ui.Model m) {
 
 		m.addAttribute("products", productService.getAllProducts());
 		return "admin/products";
+	}*/
+	
+	@GetMapping("/products")
+	public String products(org.springframework.ui.Model m, @RequestParam(value = "category", defaultValue = "") String category,
+			@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+			@RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
+			@RequestParam(defaultValue = "") String ch) {
+
+		List<Category> categories = categoryService.getAllActiveCategory();
+		m.addAttribute("paramValue", category);
+		m.addAttribute("categories", categories);
+
+		Page<Product> page = null;
+		if (StringUtils.isEmpty(ch)) {
+			page = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+		} else {
+			page = productService.searchActiveProductPagination(pageNo, pageSize, category, ch);
+		}
+
+		List<Product> products = page.getContent();
+		m.addAttribute("products", products);
+		m.addAttribute("productsSize", products.size());
+		System.out.println("========productsSize"+products.size());
+
+		m.addAttribute("pageNo", page.getNumber());
+		m.addAttribute("pageSize", pageSize);
+		m.addAttribute("totalElements", page.getTotalElements());
+		m.addAttribute("totalPages", page.getTotalPages());
+		m.addAttribute("isFirst", page.isFirst());
+		m.addAttribute("isLast", page.isLast());
+
+		return "product";
 	}
 
 	@GetMapping("/deleteProduct/{id}")

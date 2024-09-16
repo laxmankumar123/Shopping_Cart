@@ -53,8 +53,7 @@
 									
 									 th:href="@{'/products?category='+${c.name}}"
 									 
-									  th:classappend="${paramValue==c.name} ? 'active':''
-									  
+									  th:classappend="${paramValue==c.name}? 'active':''"
 									class="list-group-item list-group-item-action">[[${c.name}]]</a>
 									
 									
@@ -68,6 +67,9 @@
 						<div class="card-body">
 							<p class="fs-3 text-center">Products</p>
 							<div class="row">
+							
+							<th:block th:if="${productsSize>0}">
+							
 								<div class="col-md-3" th:each="p:${products}">
 									<div class="card">
 										<div class="card-body">
@@ -86,7 +88,7 @@
 														<span class="fs-6 text-success">
 														[[${p.discount}]]% Off</span>
 												</p>
-												<a href="/product"
+												<a th:href="@{'/product/'+${p.id}}"
 													class="btn btn-primary col-md-6 offset-md-3"> View
 													Details</a>
 
@@ -94,6 +96,13 @@
 										</div>
 									</div>
 								</div>
+								
+								</th:block>
+								
+								<th:block th:unless="${productsSize>0}">
+								 <p class="fs-4 text-center mt-4 text-danger">Product not
+										available</p>
+								 </th:block>
 							</div>
 						</div>
 					</div>

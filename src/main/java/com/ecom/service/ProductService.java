@@ -2,6 +2,7 @@ package com.ecom.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.model.Category;
@@ -21,6 +22,10 @@ public interface ProductService {
 	public Product updateProduct(Product product, MultipartFile file);
 	
 	public List<Product> getAllActiveProducts(String category);
+
+	public Page<Product> getAllActiveProductPagination(Integer pageNo, Integer pageSize, String category);
+
+	public Page<Product> searchActiveProductPagination(Integer pageNo, Integer pageSize, String category, String ch);
 	
 	
 

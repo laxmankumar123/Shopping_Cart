@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ecom.model.Category;
@@ -50,13 +52,26 @@ public class HomeController {
 		m.addAttribute("categories", categories);
 		m.addAttribute("products", products);
 		m.addAttribute("paramValue", category);
-		System.out.println("=============categories"  +   categories);
-		System.out.println("=============products"   +   products.toArray());
-		System.out.println("=============category"   +  category);
-		
 		
 		return "product";
 	}
+	
+	@GetMapping("/product/{id}")
+	public String product(@PathVariable int id, org.springframework.ui.Model m) {
+		Product productById = productService.getProductById(id);
+		m.addAttribute("product", productById);
+		
+		System.out.println("=============id"  +   id);
+		
+			
+	
+		
+		
+		return "veiw_product";
+	}
+
+	
+	
 	
 	@GetMapping("/product")
 	public String product() {
