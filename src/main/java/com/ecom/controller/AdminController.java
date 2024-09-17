@@ -180,6 +180,7 @@ public class AdminController {
 		m.addAttribute("products", productService.getAllProducts());
 		return "admin/products";
 	}
+	
 	/*
 	@GetMapping("/products")
 	public String products(org.springframework.ui.Model m, @RequestParam(value = "category", defaultValue = "") String category,

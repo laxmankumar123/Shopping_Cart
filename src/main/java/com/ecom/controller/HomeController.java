@@ -1,18 +1,32 @@
 package com.ecom.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.model.Category;
 import com.ecom.model.Product;
+import com.ecom.model.UserDtls;
 import com.ecom.service.CategoryService;
 import com.ecom.service.ProductService;
+import com.ecom.service.UserServic;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -27,6 +41,10 @@ public class HomeController {
 	private ProductService productService;
 	
 	
+	@Autowired
+	private UserServic userServic;
+	
+	
 	@GetMapping("/")
 	public String index() {
 		return "index.html";
@@ -39,7 +57,7 @@ public class HomeController {
 	
 	@GetMapping("/register")
 	public String register() {
-		return "register.html";
+		return "register";
 	}
 	
 	@GetMapping("/products")
@@ -77,5 +95,46 @@ public class HomeController {
 	public String product() {
 		return "veiw_product.html";
 	}
+	
+	
+	@PostMapping("/saveUser")
+	public String saveUser(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file,HttpSession session ) throws IOException {
+		
+		String imageName=file.isEmpty()? "default.jpg":file.getOriginalFilename();
+		user.setProfileImage(imageName);
+		UserDtls saveUser = userServic.saveUser(user);
+		
+		if(!ObjectUtils.isEmpty(saveUser)) {
+			
+			if(!file.isEmpty()) {
+				File saveFile = new ClassPathResource("static/img").getFile();
+
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+						+ file.getOriginalFilename());
+
+				System.out.println(path);
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+				
+				
+
+			}
+			session.setAttribute("succMsg", "Saved successfully");
+			
+				
+				
+			}else {
+				session.setAttribute("errorMsg", "Not saved ! internal server error");
+		}
+		
+		
+		
+		
+		
+		
+		
+		return "redirect:/register";
+	}
+	
+	
 
 }

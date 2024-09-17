@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{base::layout(~{::section})}">
+	
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -17,28 +18,42 @@
 
 				<div class="col-md-7  p-2">
 					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
-						<div class="card-header">
+						<div class="card-header text-center">
 							<p class="fs-4 text-center">Register</p>
+
+<!--  
+							<th:block th:if="${session.succMsg}">
+								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+								<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+							</th:block>
+
+							<th:block th:if="${session.errorMsg}">
+								<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+								<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+							</th:block>
+ -->
+
 						</div>
 
 						<div class="card-body">
 
-							<form>
+							<form action="/saveUser" enctype="multipart/form-data"
+								method="post">
 								<div class="row">
 									<div class="col">
-										<label class="form-control"> Full Name </label> <input
+										<label class="form-control"> Full Name </label> <input required
 											class="form-control" name="name" type="text">
 									</div>
 
 
 									<div class="col">
-										<label class="form-control">Mobile NUmber </label> <input
+										<label class="form-control">Mobile NUmber </label> <input required
 											class="form-control" name="mobileNumber" type="number">
 									</div>
 								</div>
 
 								<div class="mb-3">
-									<label class="form-control"> Email</label> <input
+									<label class="form-control"> Email</label> <input required
 										class="form-control" name="email" type="email">
 								</div>
 
@@ -46,55 +61,55 @@
 
 								<div class="row">
 									<div class="col">
-										<label class="form-control"> Address</label> <input
+										<label class="form-control"> Address</label> <input required
 											class="form-control" name="address" type="text">
 									</div>
 
 
 									<div class="col">
-										<label class="form-control">City </label> <input
+										<label class="form-control">City </label> <input required
 											class="form-control" name="city" type="text">
 									</div>
 								</div>
-								
-								
-								
+
+
+
 								<div class="row">
 									<div class="col">
-										<label class="form-control"> State</label> <input
+										<label class="form-control"> State</label> <input required
 											class="form-control" name="state" type="text">
 									</div>
 
 
 									<div class="col">
-										<label class="form-control">Pine Code  </label> <input
+										<label class="form-control">Pine Code </label> <input required
 											class="form-control" name="pincode" type="number">
 									</div>
 								</div>
-								
-								
-								
+
+
+
 								<div class="row">
 									<div class="col">
-										<label class="form-control"> Password</label> <input
+										<label class="form-control"> Password</label> <input required
 											class="form-control" name="password" type="password">
 									</div>
 
 
 									<div class="col">
-										<label class="form-control">Confirm Password </label> <input
+										<label class="form-control">Confirm Password </label> <input required
 											class="form-control" name="cpassword" type="password">
 									</div>
 								</div>
-								
-								
-								
-								
-									<div class="mb-3">
-										<label class="form-control"> Profile Image</label> <input
-											class="form-control" name="profile_image" type="file">
-									</div>
-							
+
+
+
+
+								<div class="mb-3">
+									<label class="form-control"> Profile Image</label> <input required
+										class="form-control" name="img" type="file">
+								</div>
+
 
 
 
@@ -107,8 +122,8 @@
 
 
 						<div class="card-footer text-center">
-							
-							 have a account ? <a href="/login" class="text-decoration-none">Login</a>
+
+							have a account ? <a href="/login" class="text-decoration-none">Login</a>
 
 
 
