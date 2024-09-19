@@ -6,5 +6,8 @@ public interface UserServic {
 	
 	
 	public UserDtls saveUser(UserDtls user);
+	
+	
+	
 
 }

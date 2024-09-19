@@ -16,10 +16,22 @@ public class UserServiceImpl implements UserServic {
 	@Autowired
 	private UserRepository repository;
 
+	
 	@Override
 	public UserDtls saveUser(UserDtls user) {
 		UserDtls saveUser = repository.save(user);
 		return saveUser;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
