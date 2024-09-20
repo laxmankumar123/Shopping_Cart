@@ -257,5 +257,14 @@ public class AdminController {
 	}
 		return "redirect:/admin/editProduct/"+product.getId();
 	}
+	
+	
+	
+	@GetMapping("/users")
+	public String getAllUsers(Model m, @RequestParam Integer type) {
+		
+		return "/admin/users";
+	}
+	
 
 }

@@ -50,7 +50,7 @@ public class HomeController {
 		return "index.html";
 	}
 	
-	@GetMapping("/login")
+	@GetMapping("/signin")
 	public String login() {
 		return "login.html";
 	}
