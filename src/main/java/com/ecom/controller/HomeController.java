@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.ecom.service.CategoryService;
 import com.ecom.service.ProductService;
 import com.ecom.service.UserServic;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -43,6 +45,20 @@ public class HomeController {
 	
 	@Autowired
 	private UserServic userServic;
+	
+	
+	
+	@ModelAttribute
+	public void getUserDetails(Principal p, org.springframework.ui.Model m) {
+		if(p!=null) {
+			
+			String email=p.getName();
+			UserDtls userByEmail = userServic.getUserByEmail(email);
+			m.addAttribute("user", userByEmail);
+		}
+		List<Category> allActiveCategory = categoryService.getAllActiveCategory();
+		m.addAttribute("categorys", allActiveCategory);
+	}
 	
 	
 	@GetMapping("/")

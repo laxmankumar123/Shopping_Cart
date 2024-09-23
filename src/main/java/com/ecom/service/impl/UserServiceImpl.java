@@ -1,5 +1,7 @@
 package com.ecom.service.impl;
 
+import java.util.List;
+
 import javax.lang.model.element.ModuleElement.UsesDirective;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import com.ecom.service.UserServic;
 public class UserServiceImpl implements UserServic {
 	
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
 
 	
 	
@@ -27,12 +29,28 @@ public class UserServiceImpl implements UserServic {
 	public UserDtls saveUser(UserDtls user) {
 		
 		user.setRole("ROLE_USER");
+		user.setIsEnable(true);
 		String encodePassword = passwordEncoder.encode(user.getPassword());
 		
 		user.setPassword(encodePassword);
 		
-		UserDtls saveUser = repository.save(user);
+		UserDtls saveUser = userRepository.save(user);
 		return saveUser;
+	}
+
+	@Override
+	public UserDtls getUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		
+		
+		
+		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public List<UserDtls> getUsers(String role) {
+		
+		return userRepository.findByRole(role);
 	}
 
 	

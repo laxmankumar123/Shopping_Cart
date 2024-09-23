@@ -15,8 +15,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
-	
-	<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/css/style.css">
 
 </head>
 <body>
@@ -25,7 +25,8 @@
 
 	<nav class="navbar navbar-expand-lg  bg-primary fixed-top navbar-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#"><i class="fa-solid fa-cart-shopping"></i>Ecom Store</a>
+			<a class="navbar-brand" href="#"><i
+				class="fa-solid fa-cart-shopping"></i>Ecom Store</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -36,37 +37,58 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/"><i class="fa-solid fa-house"></i>Home</a></li>
-						
+
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/products">Product</a></li>
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="#">Category</a></li>
-						
-					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+
+
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#" role="button"
-						data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
+						data-bs-toggle="dropdown" aria-expanded="false"> Category </a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Action</a></li>
-							<li><a class="dropdown-item" href="#">Another action</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Something else
-									here</a></li>
+							<li th:each="c:${categorys}"><a class="dropdown-item"
+								th:href="@{'/products?category='+${c.name}}">[[${c.name}]]</a></li>
 						</ul></li>
+
 				</ul>
-				
+
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="signin"><i class="fa-solid fa-right-to-bracket"></i>LOGIN</a></li>
-						
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="/register">REGISTER</a></li>
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="#">ADMIN</a></li>
-					
+					<th:block th:if="${user==null}">
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" href="signin"><i
+								class="fa-solid fa-right-to-bracket"></i>LOGIN</a></li>
+
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" href="/register">REGISTER</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" href="#">ADMIN</a></li>
+					</th:block>
+
+
+					<th:block th:if="${user!=null}">
+
+
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle active" href="#" role="button"
+							data-bs-toggle="dropdown" arial-expanded="false"><i
+								class="fa-solid fa-user"></i>[[${user.name}]]</a>
+
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Profile</a></li>
+								<li><a class="dropdown-item" href="#">Another action</a>
+								<li><hr class="dropdown-divider"></li>
+
+							</ul></li>
+
+
+
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" href="/logout"><i
+								class="fa-solid fa-right-to-bracket"></i>Logout</a></li>
+					</th:block>
 				</ul>
-				
-				
+
+
 			</div>
 		</div>
 	</nav>
@@ -77,12 +99,15 @@
 
 
 	<div th:replace="${content}"></div>
-	
+
 	<!-- Start Footer -->
-	<div class="container-fluid p-1 bg-primary text-center text-white" style="margin-top: 250px">
-	<p> <a  href="http://localhost:8080/admin/" class="text btn danger">ecom.com<a></a></p>
-	
-	
+	<div class="container-fluid p-1 bg-primary text-center text-white"
+		style="margin-top: 250px">
+		<p>
+			<a href="http://localhost:8080/admin/" class="text btn danger">ecom.com<a></a>
+		</p>
+
+
 	</div>
 	<!-- End Footer -->
 
