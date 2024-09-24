@@ -45,23 +45,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="p,c:${products}">
+						<tr th:each="u,c:${users}">
 							<th scope="row">[[${c.count}]]</th>
 							
-							<td><img th:src="@{'/img/product_img/'+${p.image}}"
+							<td><img th:src="@{'/img/profile_img/'+${u.profileImage}}"
 									width="70px" height="70px"></td>
-							<td>[[${p.title}]]</td>
-							<td>[[${p.category}]]</td>
-							<td>[[${p.price}]]</td>
-							<td>[[${p.discount}]]</td>
-							<td>[[${p.discountPrice}]]</td>
-							<td>[[${p.isActive}]]</td>
-							<td>[[${p.stock}]]</td>
+							<td>[[${u.name}]]</td>
+							<td>[[${u.email}]]</td>
+							<td>[[${u.mobileNumber}]]</td>
+							<td>[[${u.address+','+u.city+','+u.state+','+u.pincode}]]</td>
+							<td>[[${u.isEnable}]]</td>
+
 							<td>
-							<a th:href="@{'/admin/editProduct/'+${p.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+							<a th:href="@{'/admin/editProduct/'+${u.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
 								
 								
-								<a th:href="@{'/admin/deleteProduct/'+${p.id}}" class="btn btn-danger btn-sm"><i
+								<a th:href="@{'/admin/deleteProduct/'+${u.id}}" class="btn btn-danger btn-sm"><i
 									class="fa-solid fa-pen-to-square"></i>Delete</a>
 							</td>
 						</tr>
