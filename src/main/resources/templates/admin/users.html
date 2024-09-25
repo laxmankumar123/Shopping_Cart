@@ -11,68 +11,66 @@
 
 	<section>
 		<div class="container-fluid mt-5 p-5">
-		
-		<div class="card card-sh">
 
-			<div class="card-header text-center">
+			<div class="card card-sh">
 
-				<p class="fs-4">View Product</p>
-				
-				<th:block th:if="${session.succMsg}">
-								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
-								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-							</th:block>
+				<div class="card-header text-center">
 
-							<th:block th:if="${session.errorMsg}">
-								<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
-								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-							</th:block>
-			</div>
+					<p class="fs-4">View Product</p>
 
-			<div class="card-body">
+					<th:block th:if="${session.succMsg}">
+						<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">Sl No</th>
-							<th scope="col">Profile</th>
-							<th scope="col">Name</th>
-							<th scope="col">Email</th>
-							<th scope="col">Mobile No</th>
-							<th scope="col">Address</th>
-							<th scope="col">Status </th>
-							<th scope="col">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="u,c:${users}">
-							<th scope="row">[[${c.count}]]</th>
-							
-							<td><img th:src="@{'/img/profile_img/'+${u.profileImage}}"
+					<th:block th:if="${session.errorMsg}">
+						<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
+						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
+				</div>
+
+				<div class="card-body">
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Sl No</th>
+								<th scope="col">Profile</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Mobile No</th>
+								<th scope="col">Address</th>
+								<th scope="col">Status</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="u,c:${users}">
+								<th scope="row">[[${c.count}]]</th>
+
+								<td><img th:src="@{'/img/profile_img/'+${u.profileImage}}"
 									width="70px" height="70px"></td>
-							<td>[[${u.name}]]</td>
-							<td>[[${u.email}]]</td>
-							<td>[[${u.mobileNumber}]]</td>
-							<td>[[${u.address+','+u.city+','+u.state+','+u.pincode}]]</td>
-							<td>[[${u.isEnable}]]</td>
+								<td>[[${u.name}]]</td>
+								<td>[[${u.email}]]</td>
+								<td>[[${u.mobileNumber}]]</td>
+								<td>[[${u.address+','+u.city+','+u.state+','+u.pincode}]]</td>
+								<td>[[${u.isEnable}]]</td>
 
-							<td>
-							<a th:href="@{'/admin/editProduct/'+${u.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-								
-								
-								<a th:href="@{'/admin/deleteProduct/'+${u.id}}" class="btn btn-danger btn-sm"><i
-									class="fa-solid fa-pen-to-square"></i>Delete</a>
-							</td>
-						</tr>
+								<td><a
+									th:href="@{'/admin/updateSts?status=true&id='+${u.id}}"
+									class="btn btn-primary btn-sm">Active</a> <a
+									th:href="@{'/admin/updateSts?status=false&id='+${u.id}}"
+									class="btn btn-danger btn-sm">InActive</a></td>
+							</tr>
 
-					</tbody>
-				</table>
+						</tbody>
+					</table>
+
+				</div>
 
 			</div>
 
-		</div>
-		
-		
+
 		</div>
 
 

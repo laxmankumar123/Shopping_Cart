@@ -238,7 +238,7 @@ public class AdminController {
 	}*/
 
 	@GetMapping("/deleteProduct/{id}")
-	public String deleteProduct(@PathVariable int id, HttpSession session) {
+	public String deleteProduct(@PathVariable Integer id, HttpSession session) {
 		Boolean deleteProduct = productService.deleteProduct(id);
 		if (deleteProduct) {
 			session.setAttribute("succMsg", "product deleted succussfully ");
@@ -250,7 +250,7 @@ public class AdminController {
 	}
 
 	@GetMapping("/editProduct/{id}")
-	public String editProduct(@PathVariable int id, org.springframework.ui.Model m) {
+	public String editProduct(@PathVariable Integer id, org.springframework.ui.Model m) {
 
 		m.addAttribute("product", productService.getProductById(id));
 		m.addAttribute("categories", categoryService.getAllCategory());
@@ -284,12 +284,27 @@ public class AdminController {
 	
 	
 	@GetMapping("/users")
-	public String getAllUsers(org.springframework.ui.Model m, @RequestParam Integer type) {
+	public String getAllUsers(org.springframework.ui.Model m, @RequestParam(name = "type", required = false) Integer type) {
 		
 		
 		List<UserDtls> users = userServic.getUsers("ROLE_USER");
 		m.addAttribute("users", users);
 		return "/admin/users";
+	}
+	
+	
+	@GetMapping("/updateSts")
+	public String updateUserAccountStatus(@RequestParam Boolean status,@RequestParam Integer id, HttpSession session) {
+		Boolean f=userServic.updateAccountStatus(id,status);
+		
+		if(f) {
+			session.setAttribute("succMsg", "Account status updated");
+		}else {
+			session.setAttribute("errorMsg", "somthing went wrong");
+		}
+		
+		return "redirect:/admin/users";
+		
 	}
 	
 

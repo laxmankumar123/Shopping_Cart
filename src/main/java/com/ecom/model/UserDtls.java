@@ -1,5 +1,7 @@
 package com.ecom.model;
 
+import java.util.Date;
+
 import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +46,13 @@ public class UserDtls {
 	private String role;
 	
 	private Boolean isEnable;
+	
+
+	private Boolean accountNonLocked;
+
+	private Integer failedAttempt;
+
+	private Date lockTime;
 
 	
 		
