@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import com.ecom.model.UserDtls;
 import com.ecom.repository.UserRepository;
@@ -16,6 +17,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+@Component
 public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandler {
 
 	@Autowired
@@ -34,7 +37,7 @@ public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandle
 		if(userDtls.getIsEnable()) {
 			if(userDtls.getAccountNonLocked()) {
 				
-				if(userDtls.getFailedAttempt()<=AppConstant.ATTEMPT_TIME) {
+				if(userDtls.getFailedAttempt()<AppConstant.ATTEMPT_TIME) {
 					userServic.increaseFailedAttempt(userDtls);
 				}else {
 					userServic.userAccountLock(userDtls);
@@ -50,9 +53,9 @@ public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandle
 				
 			}
 		}else {
-			 exception = new LockedException("your account is in active");
+			 exception = new LockedException("your account is In_active");
 		}
-		
+		super.setDefaultFailureUrl("/signin?error");
 		super.onAuthenticationFailure(request, response, exception);
 	}
 	
