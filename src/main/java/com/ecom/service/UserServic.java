@@ -25,6 +25,9 @@ public interface UserServic {
 	public boolean unlockAccountTimeExpired(UserDtls user);
 
 	public void resetAttempt(int userId);
+
+
+	public void updateUserResetToken(String email, String resetToken);
 	
 	
 

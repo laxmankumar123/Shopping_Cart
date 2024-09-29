@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -26,8 +27,10 @@ import com.ecom.model.UserDtls;
 import com.ecom.service.CategoryService;
 import com.ecom.service.ProductService;
 import com.ecom.service.UserServic;
+import com.ecom.util.CommonUtil;
 
 import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -141,14 +144,50 @@ public class HomeController {
 			}else {
 				session.setAttribute("errorMsg", "Not saved ! internal server error");
 		}
-		
-		
-		
-		
-		
-		
-		
 		return "redirect:/register";
+	}
+	
+	@GetMapping("/forgot-password")
+	public String showForgotPassword() {
+		return "forgot_password.html";
+	}
+	
+	@PostMapping("/forgot-password")
+	public String processForgotPassword(@RequestParam String email, HttpSession session, HttpServletRequest request) {
+		
+		UserDtls userByEmail = userServic.getUserByEmail(email);
+		
+		if(ObjectUtils.isEmpty(userByEmail)) {
+			session.setAttribute("errorMsg", "Invalid Email");
+		}else {
+			
+			String resetToken = UUID.randomUUID().toString();
+			userServic.updateUserResetToken(email, resetToken);
+			System.out.println("-------resetToken"+resetToken);
+			
+			
+			// Generate url http://localhost:8080/forgot-password?token=efjfhhvjdfbjvdbbjbmkbmk
+			
+			
+			String url = CommonUtil.generateUrl(request);
+			
+			
+			
+			
+			
+			Boolean sendMail = CommonUtil.sendMail();
+			if(sendMail) {
+				session.setAttribute("succMsg", "Please check your email...  Password reset link sent ");
+			}else {
+				session.setAttribute("errorMsg", "Somthing went wrong on server ! Email not sent ");
+			}
+		}
+		return "redirect:/forgot-password";
+	}
+
+	@GetMapping("/reset-password")
+	public String showResetPassword() {
+		return "reset_password.html";
 	}
 	
 	
