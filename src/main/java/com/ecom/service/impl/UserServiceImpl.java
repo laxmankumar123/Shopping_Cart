@@ -124,9 +124,20 @@ public class UserServiceImpl implements UserServic {
 	@Override
 	public void updateUserResetToken(String email, String resetToken) {
 		UserDtls findEmail = userRepository.findByEmail(email);
-		findEmail.setReset_token(resetToken);
+		findEmail.setResetToken(resetToken);
 		System.out.println("=======resetToken"+resetToken);
 		userRepository.save(findEmail);
+	}
+	
+	public UserDtls getUserByToken(String token) {
+		
+		return userRepository.findByResetToken(token);
+	}
+
+	@Override
+	public UserDtls updateUser(UserDtls user) {
+		
+		return userRepository.save(user);
 	}
 
 	

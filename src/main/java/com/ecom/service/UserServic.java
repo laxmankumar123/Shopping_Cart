@@ -29,6 +29,10 @@ public interface UserServic {
 
 	public void updateUserResetToken(String email, String resetToken);
 	
+	public UserDtls getUserByToken(String token);
+	
+	public UserDtls  updateUser(UserDtls user);
+	
 	
 
 }

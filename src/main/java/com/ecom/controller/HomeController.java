@@ -2,6 +2,7 @@ package com.ecom.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,8 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,7 @@ import com.ecom.service.UserServic;
 import com.ecom.util.CommonUtil;
 
 import ch.qos.logback.core.model.Model;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -49,6 +53,11 @@ public class HomeController {
 	@Autowired
 	private UserServic userServic;
 	
+	@Autowired
+	private CommonUtil commonUtil;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	
 	@ModelAttribute
@@ -100,15 +109,9 @@ public class HomeController {
 		
 		System.out.println("=============id"  +   id);
 		
-			
-	
-		
-		
 		return "veiw_product";
 	}
 
-	
-	
 	
 	@GetMapping("/product")
 	public String product() {
@@ -133,14 +136,11 @@ public class HomeController {
 
 				System.out.println(path);
 				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-				
-				
+
 
 			}
 			session.setAttribute("succMsg", "Saved successfully");
-			
-				
-				
+	
 			}else {
 				session.setAttribute("errorMsg", "Not saved ! internal server error");
 		}
@@ -153,7 +153,7 @@ public class HomeController {
 	}
 	
 	@PostMapping("/forgot-password")
-	public String processForgotPassword(@RequestParam String email, HttpSession session, HttpServletRequest request) {
+	public String processForgotPassword(@RequestParam String email, HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException  {
 		
 		UserDtls userByEmail = userServic.getUserByEmail(email);
 		
@@ -163,19 +163,20 @@ public class HomeController {
 			
 			String resetToken = UUID.randomUUID().toString();
 			userServic.updateUserResetToken(email, resetToken);
+			
 			System.out.println("-------resetToken"+resetToken);
+
+			// Generate url 
+			//http://localhost:8080/reset-password?token=e62e05b5-6c3c-4234-b5e4-ef66bdf91ec7
+
+			String url = CommonUtil.generateUrl(request)+"/reset-password?token="+resetToken;
+			
+			System.out.println("====email"+email);
+			System.out.println("====url"+url);
 			
 			
-			// Generate url http://localhost:8080/forgot-password?token=efjfhhvjdfbjvdbbjbmkbmk
+			Boolean sendMail = commonUtil.sendMail(url, email);
 			
-			
-			String url = CommonUtil.generateUrl(request);
-			
-			
-			
-			
-			
-			Boolean sendMail = CommonUtil.sendMail();
 			if(sendMail) {
 				session.setAttribute("succMsg", "Please check your email...  Password reset link sent ");
 			}else {
@@ -186,9 +187,42 @@ public class HomeController {
 	}
 
 	@GetMapping("/reset-password")
-	public String showResetPassword() {
-		return "reset_password.html";
+	public String showResetPassword(@RequestParam String token, org.springframework.ui.Model m) {
+		
+		System.out.println("----token"+token);
+		UserDtls userByToken = userServic.getUserByToken(token);
+		System.out.println("----userByToken"+userByToken);
+		
+		
+		if(userByToken==null) {
+			m.addAttribute("msg", "Your link is invalid or Expired");
+			return "message";
+		}
+		m.addAttribute("token", token);
+		return "reset_password";
 	}
+	
+	@PostMapping("/reset-password")
+	public String resetPassword(@RequestParam String token, @RequestParam String password, org.springframework.ui.Model m, HttpSession session) {
+
+		UserDtls userByToken = userServic.getUserByToken(token);
+
+		if(userByToken==null) {
+			m.addAttribute("errorMsg", "Your link is invalid or Expired");
+			return "message";
+			
+		}else {
+			userByToken.setPassword(passwordEncoder.encode(password));
+			userByToken.setResetToken(null);
+			userServic.updateUser(userByToken);
+			//session.setAttribute("msg", "Password changed succussfully");
+			m.addAttribute("msg","Password change successfully");
+			return "message";
+		}
+		
+		
+	}
+	
 	
 	
 
