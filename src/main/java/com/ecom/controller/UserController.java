@@ -19,10 +19,11 @@ import com.ecom.service.CartService;
 import com.ecom.service.CategoryService;
 import com.ecom.service.UserServic;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-//@RequestMapping("/user")
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -63,7 +64,7 @@ public class UserController {
 		 System.out.println("=====uid"+uid);
 		 if(ObjectUtils.isEmpty(saveCart)) {
 			 System.out.println("---added");
-			 session.setAttribute("errorMsg", "Product add to cart field");
+			 session.setAttribute("errorMsg", "Product add to cart is Field.....!!!");
 		 }else {
 			 System.out.println("---Insert empty");
 			session.setAttribute("succMsg", "Product added to cart");
@@ -73,10 +74,19 @@ public class UserController {
 	
 	
 	@GetMapping("/cart")
-	public String loadCartPage() {
-			
-			return "cart";
+	public String loadCartPage( Principal p, org.springframework.ui.Model m) {
+		
+		UserDtls user=getLoggedInUserDetails(p);
+		List<Cart> carts = cartService.getCartsByUser(user.getId());
+		m.addAttribute("carts", carts);
+		return "user/cart";
 		}
+
+	private UserDtls getLoggedInUserDetails(Principal p) {
+		String email = p.getName();
+		UserDtls userByEmail = userServic.getUserByEmail(email);
+		return userByEmail;
+	}
 	
 	
 	

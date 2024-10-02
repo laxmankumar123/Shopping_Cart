@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{base::layout(~{::section})}">
@@ -7,66 +6,72 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+
+
 	<section>
-		<div class="container mt-5 p-5">
-			<div class="row">
+		<div class="container-fluid mt-5 p-5">
+		
+		<div class="card card-sh">
 
-				<div class="col-md-6 p-5">
-					<img src="img/ecom.png" width="100%" height="400px">
-				</div>
+			<div class="card-header text-center">
 
-				<div class="col-md-6 mt-3 p-5">
-					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
-						<div class="card-header">
-							<p class="fs-4 text-center">Cart Page</p>
-							
-							<div th:if="${param.error}" class="alert alert-danger">
-							[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
-							</div>
-							
-							<div th:if="${param.logout}" class="alert alert-success">
-							Logout successfuly
-							</div>
-							
-							
-							
-						</div>
+				<p class="fs-4"> Cart  Pages...</p>
+				
+				<th:block th:if="${session.succMsg}">
+								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+							</th:block>
 
-						<div class="card-body">
-
-							<form action="/login" method="post">
-
-								<div class="mb-3">
-									<label class="form-control"> Email</label> <input class="form-control" name="username"
-										type="email">
-								</div>
-								
-								
-								<div class="mb-3">
-									<label class="form-control" >Password </label> <input class="form-control" name="password"
-										type="password">
-								</div>
-								<button type="submit" class="btn bg-primary text-white col-md-12">Login</button>
-
-
-							</form>
-
-
-						</div>
-						
-						
-						<div class="card-footer text-center">
-						<a href="/forgot-password" class="text-decoration-none">Forgot Password</a><br> Don't have a account ?
-						<a href="#" class="text-decoration-none">Create One</a>
-						
-						
-						
-						</div>
-					</div>
-				</div>
+							<th:block th:if="${session.errorMsg}">
+								<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
+								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+							</th:block>
 			</div>
+
+			<div class="card-body">
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">SL No</th>
+							<th scope="col">Image</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Price</th>
+							<th scope="col"> Quantity</th>
+							<th scope="col">Total price</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cart,c:${carts}">
+							<th scope="row">[[${c.count}]]</th>
+							
+							<td><img th:src="@{'/img/product_img/'+${p.image}}"
+									width="70px" height="70px"></td>
+							<td>[[${cart.product.title}]]</td>
+							<td>[[${cart.product.discounPrice}]]</td>
+							<td>[[${cart.product.quantity}]]</td>
+							<td>[[${cart.product.totalPrice}]]</td>
+							
+						
+						</tr>
+
+					</tbody>
+				</table>
+
+			</div>
+
 		</div>
+		
+		
+		</div>
+
+
 	</section>
 
 </body>
 </html>
+
+
+

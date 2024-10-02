@@ -1,5 +1,7 @@
 package com.ecom.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +59,25 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public List<Cart> getCartsByUser(Integer userId) {
 		
+		List<Cart> carts = cartRepository.findByUserId(userId);
+		
+		Double totalOrderPrice=0.0;
+		
+		List<Cart> updateCart = new ArrayList<>();
 		
 		
-		
-		return null;
+		for (Cart c:carts) {
+			 Double totalPrice = (c.getProduct().getDiscountPrice()*c.getQuantity());
+			 c.setTotalPrice(totalPrice);
+			 
+			 totalOrderPrice=totalOrderPrice+totalPrice;
+			 c.setTotalOrderPrice(totalOrderPrice);
+			 updateCart.add(c);
+			 
+		}
+		return updateCart;
 	}
+	
 
 	@Override
 	public Integer getCountCart(Integer userId) {
