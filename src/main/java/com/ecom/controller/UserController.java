@@ -46,6 +46,9 @@ public class UserController {
 			String email=p.getName();
 			UserDtls userByEmail = userServic.getUserByEmail(email);
 			m.addAttribute("user", userByEmail);
+			
+			Integer countCart = cartService.getCountCart(userByEmail.getId());
+			m.addAttribute("countCart", countCart);
 		}
 		
 		List<Category> allActiveCategory = categoryService.getAllActiveCategory();
@@ -67,6 +70,13 @@ public class UserController {
 		}
 		 return "redirect:/product/" + pid;
 	}
+	
+	
+	@GetMapping("/cart")
+	public String loadCartPage() {
+			
+			return "cart";
+		}
 	
 	
 	

@@ -48,8 +48,6 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain( HttpSecurity http) throws Exception {
-		
-		
 		http.csrf(csrf->csrf.disable()).cors(cors->cors.disable())
 		.authorizeHttpRequests(req->req.requestMatchers("/user/**").hasRole("USER")
 		.requestMatchers("/admin/**").hasRole("ADMIN")
@@ -60,11 +58,9 @@ public class SecurityConfig {
 				.failureHandler(authenticationFailureHandler)
 				.successHandler(authenticationSuccessHandler)
 		)
-		
-		.logout(logout->logout.permitAll());
-		
-		
+		.logout(logout->logout.permitAll());		
 		return http.build();
 	}
+	
 
 }
