@@ -88,12 +88,26 @@ public class CartServiceImpl implements CartService {
 		
 		return countByUserId;
 	}
-	
-	
-	
-	
 
-	
+	@Override
+	public void updateQuantity(String sy, Integer cid) {
+		Cart cart = cartRepository.findById(cid).get();
+		int updateQuantity;
+		if(sy.equalsIgnoreCase("de")) {
+			updateQuantity=cart.getQuantity()-1;
+			if (updateQuantity<=0) {
+				cartRepository.delete(cart);
+			}else {
+				cart.setQuantity(updateQuantity);
+				cartRepository.save(cart);
+			}
+		}else {
+			updateQuantity=cart.getQuantity()+1;
+			cart.setQuantity(updateQuantity);
+			cartRepository.save(cart);
+		}
+		
+	}
 	
 	
 }

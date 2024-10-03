@@ -99,7 +99,7 @@
 
 							<th:block th:unless="${user==null}">
 								<a
-									th:href="@{'/addCart?pid='+${product.id}+'&uid='+${user.id}}"
+									th:href="@{'/user/addCart?pid='+${product.id}+'&uid='+${user.id}}"
 									class="btn btn-danger col-md-12">Add to Cart</a>
 							</th:block>
 

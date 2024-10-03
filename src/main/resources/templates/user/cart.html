@@ -11,65 +11,72 @@
 
 	<section>
 		<div class="container-fluid mt-5 p-5">
-		
-		<div class="card card-sh">
 
-			<div class="card-header text-center">
+			<div class="card card-sh">
 
-				<p class="fs-4"> Cart  Pages...</p>
-				
-				<th:block th:if="${session.succMsg}">
-								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
-								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-							</th:block>
+				<div class="card-header text-center">
 
-							<th:block th:if="${session.errorMsg}">
-								<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
-								<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-							</th:block>
-			</div>
+					<p class="fs-4">Cart Pages...</p>
 
-			<div class="card-body">
+					<th:block th:if="${session.succMsg}">
+						<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">SL No</th>
-							<th scope="col">Image</th>
-							<th scope="col">Product Name</th>
-							<th scope="col">Price</th>
-							<th scope="col"> Quantity</th>
-							<th scope="col">Total price</th>
-							<th scope="col">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="cart,c:${carts}">
-							<th scope="row">[[${c.count}]]</th>
-							
-							<td><img th:src="@{'/img/product_img/'+${p.image}}"
+					<th:block th:if="${session.errorMsg}">
+						<p class="text-success fw-bold">[[${session.errorMsg}]]</p>
+						<th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+					</th:block>
+				</div>
+
+				<div class="card-body">
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">SL No</th>
+								<th scope="col">Image</th>
+								<th scope="col">Product Name</th>
+								<th scope="col">Price</th>
+								<th scope="col" class="text-center">Quantity</th>
+								<th scope="col">Total price</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="cart,c:${carts}">
+								<th scope="row">[[${c.count}]]</th>
+
+								<td><img
+									th:src="@{'/img/product_img/'+${cart.product.image}}"
 									width="70px" height="70px"></td>
-							<td>[[${cart.product.title}]]</td>
-							<td>[[${cart.product.discounPrice}]]</td>
-							<td>[[${cart.product.quantity}]]</td>
-							<td>[[${cart.product.totalPrice}]]</td>
-							
-						
-						</tr>
-
-					</tbody>
-				</table>
-
+								<td>[[${cart.product.title}]]</td>
+								<td>[[${cart.product.discountPrice}]]</td>
+								
+								
+								<td class="text-center"><a
+									th:href="@{'/user/cartQuantityUpdate?sy=de&cid='+${cart.id}}">
+										<i class="fa-solid fa-minus"></i>
+								</a> [ [[${cart.quantity}]] ] <a
+									th:href="@{'/user/cartQuantityUpdate?sy=in&cid='+${cart.id}}">
+										<i class="fa-solid fa-plus"></i>
+								</a></td>
+								<td>[[${cart.totalPrice}]]</td>
+							<tr>
+								<td colspan="4"></td>
+								<td class="fw-bold">Total Price....</td>
+								<td class="fw-bold">&#8377;[[${totalOrderPrice}]]</td>
+							</tr>
+							</tr>
+						</tbody>
+					</table>		
+					<div class="text-center">
+						<a href="/user/orders" class="btn btn-warning"> Proceed Payment</a>
+					</div>
+				</div>
 			</div>
-
 		</div>
-		
-		
-		</div>
-
-
 	</section>
-
 </body>
 </html>
 
