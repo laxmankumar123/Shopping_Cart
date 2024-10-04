@@ -18,7 +18,7 @@
 						<div class="mb-3 row">
 
 
-							<p class="text-center fs-2">Fill Address</p>
+							<p class="text-center fs-4">Fill Address</p>
 							<hr>
 							<div class="col p-1">
 								<label>First Name</label><input type="text" name="firstName"
@@ -61,56 +61,81 @@
 								<label>State</label> <input type="text" name="state"
 									class="form-control col">
 							</div>
-						
-						<div class="col p-1">
-							<label>Pinecode</label> <input type="number" name="pinecode"
-								 class="form-control col ms-2">
+
+							<div class="col p-1">
+								<label>Pinecode</label> <input type="number" name="pinecode"
+									class="form-control col ms-2">
+							</div>
 						</div>
-						</div>
-		
-			</form>
-
-
-		</div>
-
-		<div class="col-md-6 mt-3">
-			<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
-			<p class="text-center fs-2">Payment Type </p>
-
-				<div class="card-body">
-
-					<form action="/login" method="post">
-
-						<div class="mb-3">
-							<label class="form-control"> Email</label> <input
-								class="form-control" name="username" type="email">
-						</div>
-
-
-						<div class="mb-3">
-							<label class="form-control">Password </label> <input
-								class="form-control" name="password" type="password">
-						</div>
-						<button type="submit" class="btn bg-primary text-white col-md-12">Login</button>
-
 
 					</form>
 
 
 				</div>
 
+				<div class="col-md-6">
 
-				<div class="card-footer text-center">
-					<a href="/forgot-password" class="text-decoration-none">Forgot
-						Password</a><br> Don't have a account ? <a href="#"
-						class="text-decoration-none">Create One</a>
+					<p class="text-center fs-4">Payment Type</p>
+					<hr>
+
+					<div class="card">
+						<div class="card-body">
+							<table class="table table-borderless">
+								<tbody>
+									<tr>
+										<td>Total price</td>
+										<td>:</td>
+										<td>&#8377; [[${orderPrice}]]</td>
+									</tr>
+									<tr>
+										<td>Delivery Fee</td>
+										<td>:</td>
+										<td>&#8377; 250</td>
+									</tr>
+
+									<tr>
+										<td>Tax</td>
+										<td>:</td>
+										<td>&#8377; 100</td>
+									</tr>
+
+									<tr class="border-top">
+										<td>Total Price</td>
+										<td>:</td>
+										<td>&#8377; [[${totalOrderPrice}]]</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 
 
+					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+
+						<div class="card-body">
+							<form action="/login" method="post">
+								<div class="mb-3">
+
+									<label class="form-control"> Select Payment Type</label> <select
+										class="form-control">
+										<option>---Select ----</option>
+										<option>Cash On Delivery</option>
+										<option>Online Payment</option>
+
+
+									</select>
+
+								</div>
+
+								<button type="submit"
+									class="btn bg-primary text-white col-md-12">Place
+									Order</button>
+							</form>
+						</div>
+					</div>
 
 				</div>
 			</div>
-		</div>
-		</div>
 		</div>
 	</section>
 
