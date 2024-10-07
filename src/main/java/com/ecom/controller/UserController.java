@@ -8,18 +8,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ecom.model.Cart;
 import com.ecom.model.Category;
+import com.ecom.model.OrderRequest;
+import com.ecom.model.ProductOrder;
 import com.ecom.model.UserDtls;
-import com.ecom.repository.CartRepository;
 import com.ecom.service.CartService;
 import com.ecom.service.CategoryService;
+import com.ecom.service.OrderService;
 import com.ecom.service.UserServic;
+import com.ecom.util.OrderStatus;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -34,6 +37,10 @@ public class UserController {
 	
 	@Autowired
 	private CartService cartService;
+	
+	@Autowired
+	private OrderService orderService;
+
 	
 	public String home() {
 		
@@ -106,9 +113,71 @@ public class UserController {
 	
 	
 	@GetMapping("/orders")
-	public String oorderPage() {
+	public String oorderPage( Principal p, org.springframework.ui.Model m) {
+		UserDtls user=getLoggedInUserDetails(p);
+		List<Cart> carts = cartService.getCartsByUser(user.getId());
+		m.addAttribute("carts", carts);
+		if(carts.size()>0) {
+			double orderPrice = carts.get(carts.size()-1).getTotalOrderPrice();
+			double totalOrderPrice = carts.get(carts.size()-1).getTotalOrderPrice()+250+100;
+			
+			m.addAttribute("orderPrice", orderPrice);
+			m.addAttribute("totalOrderPrice", totalOrderPrice);
+		}
 		return "/user/order";
 	}
+	
+	@PostMapping("/save-order")
+	public String saveOrder(@ModelAttribute OrderRequest request, Principal p) {
+		System.out.println(request);
+		UserDtls user = getLoggedInUserDetails(p);
+		orderService.saveOrder(user.getId(), request);
+
+		return "redirect:/user/success";
+	}
+	
+	@GetMapping("/success")
+	public String loadSuccess() {
+		return "/user/success";
+	}
+	
+	
+	@GetMapping("/user-orders")
+	public String myOrder(org.springframework.ui.Model m, Principal p) {
+		
+		UserDtls loginUser = getLoggedInUserDetails(p);
+		List<ProductOrder> orders = orderService.getOrderByUser(loginUser.getId());
+		m.addAttribute("orders", orders);
+		return "/user/my_orders";
+	}
+	
+	@GetMapping("/update-status")
+	public String updateOrderStatus(@RequestParam Integer id, @RequestParam String st, HttpSession session) {
+		
+		OrderStatus[] values = OrderStatus.values();
+		String status= null;
+		System.out.println("---st--"+st);
+		for (OrderStatus orderSt : values) {
+			int number = Integer.parseInt(st);
+			if (orderSt.getId()==number) {
+				status = orderSt.getName();
+				System.out.println("---status inside--"+status);
+			}
+		}
+		
+		System.out.println("---status"+status);
+		
+		Boolean updateOrder = orderService.updateOrderStatus(id, status);
+		if (updateOrder) {
+			session.setAttribute("succMsg", "Status updated");
+			
+		}else {
+			session.setAttribute("errorMsg", "status not updated");
+		}
+		
+		return "redirect:/user/user-orders";
+	}
+	
 	
 	
 	

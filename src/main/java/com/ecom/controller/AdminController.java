@@ -291,9 +291,8 @@ public class AdminController {
 	
 	
 	@GetMapping("/users")
-	public String getAllUsers(org.springframework.ui.Model m, @RequestParam(name = "type", required = false) Integer type) {
-		
-		
+	public String getAllUsers(org.springframework.ui.Model m) {
+
 		List<UserDtls> users = userServic.getUsers("ROLE_USER");
 		m.addAttribute("users", users);
 		return "/admin/users";
@@ -308,11 +307,18 @@ public class AdminController {
 			session.setAttribute("succMsg", "Account status updated");
 		}else {
 			session.setAttribute("errorMsg", "somthing went wrong");
-		}
-		
+		}	
 		return "redirect:/admin/users";
-		
 	}
+	
+	@GetMapping("/orders")
+	public String getAllOrders(org.springframework.ui.Model m) {
+
+		
+		return "/admin/orders";
+	}
+	
+	
 	
 
 }
