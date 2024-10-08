@@ -25,9 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.model.Category;
 import com.ecom.model.Product;
+import com.ecom.model.ProductOrder;
 import com.ecom.model.UserDtls;
 import com.ecom.service.CartService;
 import com.ecom.service.CategoryService;
+import com.ecom.service.OrderService;
 import com.ecom.service.ProductService;
 import com.ecom.service.UserServic;
 
@@ -52,6 +54,9 @@ public class AdminController {
 	@Autowired
 	private CartService cartService;
 	
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@ModelAttribute
 	public void getUserDetails(Principal p, org.springframework.ui.Model m) {
@@ -314,8 +319,9 @@ public class AdminController {
 	@GetMapping("/orders")
 	public String getAllOrders(org.springframework.ui.Model m) {
 
-		
-		return "/admin/orders";
+		List<ProductOrder> allOrders = orderService.getAllOrders();
+		m.addAttribute("orders", allOrders);
+		return "/admin/order";
 	}
 	
 	
