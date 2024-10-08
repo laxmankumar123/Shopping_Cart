@@ -32,6 +32,7 @@ import com.ecom.service.CategoryService;
 import com.ecom.service.OrderService;
 import com.ecom.service.ProductService;
 import com.ecom.service.UserServic;
+import com.ecom.util.OrderStatus;
 
 import ch.qos.logback.core.model.Model;
 import io.micrometer.common.util.StringUtils;
@@ -321,10 +322,30 @@ public class AdminController {
 
 		List<ProductOrder> allOrders = orderService.getAllOrders();
 		m.addAttribute("orders", allOrders);
-		return "/admin/order";
+		return "/admin/orders";
 	}
 	
 	
+	@PostMapping("/update-order-status")
+	public String updateOrderStatus(@RequestParam Integer id, @RequestParam String st, HttpSession session) {
+		OrderStatus[] values = OrderStatus.values();
+		String status= null;
+		System.out.println("---st--"+st);
+		for (OrderStatus orderSt : values) {
+			int number = Integer.parseInt(st);
+			if (orderSt.getId()==number) {
+				status = orderSt.getName();
+				System.out.println("---status inside--"+status);
+			}
+		}
+		System.out.println("---status"+status);	
+		Boolean updateOrder = orderService.updateOrderStatus(id, status);
+		if (updateOrder) {
+			session.setAttribute("succMsg", "Status updated");	
+		}else {
+			session.setAttribute("errorMsg", "status not updated");
+		}
+		return "redirect:/admin/orders";
 	
-
+	}
 }
