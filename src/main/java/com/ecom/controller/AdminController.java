@@ -2,6 +2,7 @@ package com.ecom.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,10 +33,12 @@ import com.ecom.service.CategoryService;
 import com.ecom.service.OrderService;
 import com.ecom.service.ProductService;
 import com.ecom.service.UserServic;
+import com.ecom.util.CommonUtil;
 import com.ecom.util.OrderStatus;
 
 import ch.qos.logback.core.model.Model;
 import io.micrometer.common.util.StringUtils;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
 
@@ -58,6 +61,10 @@ public class AdminController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private CommonUtil commonUtil;
+
 	
 	@ModelAttribute
 	public void getUserDetails(Principal p, org.springframework.ui.Model m) {
@@ -339,8 +346,18 @@ public class AdminController {
 			}
 		}
 		System.out.println("---status"+status);	
-		Boolean updateOrder = orderService.updateOrderStatus(id, status);
-		if (updateOrder) {
+		
+		ProductOrder updateOrder = orderService.updateOrderStatus(id, status);
+		try {
+			commonUtil.sendMailForProductOrder(updateOrder, status);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (!ObjectUtils.isEmpty(updateOrder)) {
 			session.setAttribute("succMsg", "Status updated");	
 		}else {
 			session.setAttribute("errorMsg", "status not updated");

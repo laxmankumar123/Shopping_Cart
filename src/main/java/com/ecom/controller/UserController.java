@@ -1,5 +1,6 @@
 package com.ecom.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.List;
 
@@ -21,8 +22,10 @@ import com.ecom.service.CartService;
 import com.ecom.service.CategoryService;
 import com.ecom.service.OrderService;
 import com.ecom.service.UserServic;
+import com.ecom.util.CommonUtil;
 import com.ecom.util.OrderStatus;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -40,6 +43,9 @@ public class UserController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private CommonUtil commonUtil;
 
 	
 	public String home() {
@@ -128,9 +134,10 @@ public class UserController {
 	}
 	
 	@PostMapping("/save-order")
-	public String saveOrder(@ModelAttribute OrderRequest request, Principal p) {
+	public String saveOrder(@ModelAttribute OrderRequest request, Principal p) throws UnsupportedEncodingException, MessagingException {
 		System.out.println(request);
 		UserDtls user = getLoggedInUserDetails(p);
+		
 		orderService.saveOrder(user.getId(), request);
 
 		return "redirect:/user/success";
@@ -167,8 +174,18 @@ public class UserController {
 		
 		System.out.println("---status"+status);
 		
-		Boolean updateOrder = orderService.updateOrderStatus(id, status);
-		if (updateOrder) {
+		ProductOrder updateOrder = orderService.updateOrderStatus(id, status);
+		try {
+			commonUtil.sendMailForProductOrder(updateOrder, status);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (!ObjectUtils.isEmpty(updateOrder)) {
 			session.setAttribute("succMsg", "Status updated");
 			
 		}else {
