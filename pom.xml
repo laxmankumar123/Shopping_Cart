@@ -62,7 +62,7 @@
 		</dependency>
 
 
-		<!-- lax
+		<!-- laxman
 		-->
 		<dependency>
 			<groupId>org.postgresql</groupId>
